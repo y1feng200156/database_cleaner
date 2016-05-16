@@ -50,8 +50,8 @@ end
 * [Moped](https://github.com/DatabaseCleaner/database_cleaner-moped)
 * [CouchPotato](https://github.com/DatabaseCleaner/database_cleaner-couch_potato)
 * [Ohm](https://github.com/DatabaseCleaner/database_cleaner-ohm)
-* [Ohm](https://github.com/DatabaseCleaner/database_cleaner-redis)
-* [Ohm](https://github.com/DatabaseCleaner/database_cleaner-neo4j)
+* [Redis](https://github.com/DatabaseCleaner/database_cleaner-redis)
+* [Neo4j](https://github.com/DatabaseCleaner/database_cleaner-neo4j)
 
 ## Supported Databases, Libraries and Strategies
 
