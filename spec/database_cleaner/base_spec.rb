@@ -1,10 +1,4 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'database_cleaner/active_record/transaction'
-require 'database_cleaner/data_mapper/transaction'
-require 'database_cleaner/mongo_mapper/truncation'
-require 'database_cleaner/mongoid/truncation'
-require 'database_cleaner/couch_potato/truncation'
-require 'database_cleaner/neo4j/transaction'
 
 module DatabaseCleaner
   describe Base do
