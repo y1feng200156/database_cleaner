@@ -5,21 +5,55 @@
 
 Database Cleaner is a set of strategies for cleaning your database in Ruby.
 
-The original use case was to ensure a clean state during tests.
-Each strategy is a small amount of code but is code that is usually needed in any ruby app that is testing with a database.
+The original use case was to ensure a clean state during tests. Each strategy
+is a small amount of code but is code that is usually needed in any ruby app
+that is testing with a database.
 
 ## Gem Setup
+
+If you're using ActiveRecord:
 
 ```ruby
 # Gemfile
 group :test do
-  gem 'database_cleaner'
+  gem 'database_cleaner-active_record'
 end
 ```
 
-## Supported Databases, Libraries and Strategies
+If you're using DataMapper:
 
-ActiveRecord, DataMapper, Sequel, MongoMapper, Mongoid, CouchPotato, Ohm and Redis are supported.
+```ruby
+# Gemfile
+group :test do
+  gem 'database_cleaner-active_record'
+end
+```
+
+You get the idea:
+
+```ruby
+# Gemfile
+group :test do
+  gem 'database_cleaner-<orm>'
+end
+```
+
+## Available ORMs and Drivers
+
+* [ActiveRecord](https://github.com/DatabaseCleaner/database_cleaner-active_record)
+* [DataMapper](https://github.com/DatabaseCleaner/database_cleaner-data_mapper)
+* [Sequel](https://github.com/DatabaseCleaner/database_cleaner-sequel)
+* [MongoMapper](https://github.com/DatabaseCleaner/database_cleaner-mongo_mapper)
+* [Mongoid](https://github.com/DatabaseCleaner/database_cleaner-mongoid)
+* [Mongo](https://github.com/DatabaseCleaner/database_cleaner-mongo)
+* [Mongo2](https://github.com/DatabaseCleaner/database_cleaner-mongo2)
+* [Moped](https://github.com/DatabaseCleaner/database_cleaner-moped)
+* [CouchPotato](https://github.com/DatabaseCleaner/database_cleaner-couch_potato)
+* [Ohm](https://github.com/DatabaseCleaner/database_cleaner-ohm)
+* [Ohm](https://github.com/DatabaseCleaner/database_cleaner-redis)
+* [Ohm](https://github.com/DatabaseCleaner/database_cleaner-neo4j)
+
+## Supported Databases, Libraries and Strategies
 
 Here is an overview of the strategies supported for each library:
 
@@ -143,8 +177,6 @@ Because database_cleaner supports multiple ORMs, it doesn't make sense to includ
 ## How to use
 
 ```ruby
-require 'database_cleaner'
-
 DatabaseCleaner.strategy = :truncation
 
 # then, whenever you need to clean the DB
@@ -169,7 +201,7 @@ passed to [`keys`](http://redis.io/commands/keys)).
 Some strategies need to be started before tests are run (for example the `:transaction` strategy needs to know to open up a transaction). This can be accomplished by calling `DatabaseCleaner.start` at the beginning of the run, or by running the tests inside a block to `Database.cleaning`. So you would have:
 
 ```ruby
-require 'database_cleaner'
+require 'database_cleaner/active_record' # If you're using ActiveRecord
 
 DatabaseCleaner.strategy = :transaction
 
@@ -191,7 +223,7 @@ At times you may want to do a single clean with one strategy.
 For example, you may want to start the process by truncating all the tables, but then use the faster transaction strategy the remaining time. To accomplish this you can say:
 
 ```ruby
-require 'database_cleaner'
+require 'database_cleaner/sequel' # If you're using Sequel
 
 DatabaseCleaner.clean_with :truncation
 
@@ -314,7 +346,6 @@ RSpec.configure do |config|
 end
 ```
 
-
 ### Minitest Example
 
 ```ruby
@@ -370,15 +401,18 @@ Sometimes you need to use multiple ORMs in your application.
 You can use DatabaseCleaner to clean multiple ORMs, and multiple connections for those ORMs.
 
 ```ruby
+require 'database_cleaner/active_record'
+require 'database_cleaner/mongo_mapper'
+
 #How to specify particular orms
 DatabaseCleaner[:active_record].strategy = :transaction
 DatabaseCleaner[:mongo_mapper].strategy = :truncation
 
 #How to specify particular connections
-DatabaseCleaner[:active_record, { :connection => :two }]
+DatabaseCleaner[:active_record, { connection: :two }]
 
 # You may also pass in the model directly:
-DatabaseCleaner[:active_record, { :model => ModelWithDifferentConnection }]
+DatabaseCleaner[:active_record, { model: ModelWithDifferentConnection }]
 ```
 
 Usage beyond that remains the same with `DatabaseCleaner.start` calling any setup on the different configured connections, and `DatabaseCleaner.clean` executing afterwards.
@@ -447,7 +481,7 @@ Usage beyond that remains the same with `DatabaseCleaner.start` calling any setu
 
 ## Why?
 
-One of my motivations for writing this library was to have an easy way to turn on what Rails calls "transactional_fixtures" in my non-rails ActiveRecord projects.
+One of my motivations for writing this library was to have an easy way to turn on what Rails calls "transactional_fixtures" in my non-Rails ActiveRecord projects.
 
 After copying and pasting code to do this several times I decided to package it up as a gem and save everyone a bit of time.
 
@@ -512,7 +546,6 @@ Here's an example of using the `Rails.logger` in `env.rb`:
 DatabaseCleaner.logger = Rails.logger
 ```
 
-
 ## COPYRIGHT
 
-Copyright (c) 2014 Ben Mabey. See LICENSE for details.
+See [LICENSE] for details.
